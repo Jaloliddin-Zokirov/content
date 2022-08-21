@@ -3,28 +3,15 @@ let elName = document.querySelector('.js-name');
 let elSurname = document.querySelector('.js-surname');
 let elAge = document.querySelector('.js-age');
 let elNumber = document.querySelector('.js-number');
+
 let elList = document.querySelector('.js-list');
 
-elForm.addEventListener('submit', function (evt) {
-	evt.preventDefault();
+let contactList = [];
 
-	let elNameVal = elName.value;
-	let elSurnameVal = elSurname.value;
-	let elAgeVal = elAge.value;
-	let elNumberVal = elNumber.value;
-	elName.value = '';
-	elSurname.value = '';
-	elAge.value = '';
-	elNumber.value = '';
+let renderContact = function () {
+	elList.innerHTML = ``;
 
-	function contact(name, surname, age, number) {
-		let person = {
-			Ismi: name,
-			Familiyasi: surname,
-			Yoshi: age,
-			Raqami: number,
-		};
-
+	for (let i = 0; i < contactList.length; i++) {
 		let newItem = document.createElement('li');
 		let newName = document.createElement('p');
 		let newSurname = document.createElement('p');
@@ -51,17 +38,17 @@ elForm.addEventListener('submit', function (evt) {
 		newNameSpanTwo.setAttribute('class', 'fw-normal fs-4 text-dark');
 		newSurnameSpanTwo.setAttribute('class', 'fw-normal fs-4 text-dark');
 		newAgeSpanTwo.setAttribute('class', 'fw-normal fs-4 text-dark');
-		newNumHref.setAttribute('class', 'text-decoration-none fw-normal fs-4 text-dark',);
+		newNumHref.setAttribute('class', 'text-decoration-none fw-normal fs-4 text-dark');
 
-		newNumHref.setAttribute('href', `tel:${elNumberVal}`);
+		newNumHref.setAttribute('href', `tel:${contactList[i].Raqami}`);
 		newNameSpan.textContent = `Ismi: `;
 		newSurnameSpan.textContent = `Familiyasi: `;
 		newAgeSpan.textContent = `Yoshi: `;
 		newNumSpan.textContent = `Raqami: `;
-		newNameSpanTwo.textContent = person.Ismi;
-		newSurnameSpanTwo.textContent = person.Familiyasi;
-		newAgeSpanTwo.textContent = person.Yoshi;
-		newNumHref.textContent = person.Raqami;
+		newNameSpanTwo.textContent = `${contactList[i].Ismi}`;
+		newSurnameSpanTwo.textContent = `${contactList[i].Familiyasi}`;
+		newAgeSpanTwo.textContent = `${contactList[i].Yoshi}`;
+		newNumHref.textContent = `${contactList[i].Raqami}`;
 
 		newName.appendChild(newNameSpan);
 		newName.appendChild(newNameSpanTwo);
@@ -76,8 +63,28 @@ elForm.addEventListener('submit', function (evt) {
 		newItem.appendChild(newAge);
 		newItem.appendChild(newNum);
 		elList.appendChild(newItem);
-
-		return person;
 	}
-	contact(elNameVal, elSurnameVal, elAgeVal, elNumberVal);
+};
+
+elForm.addEventListener('submit', function (evt) {
+	evt.preventDefault();
+
+	let elNameVal = elName.value.trim();
+	let elSurnameVal = elSurname.value.trim();
+	let elAgeVal = elAge.value.trim();
+	let elNumberVal = elNumber.value.trim();
+	elName.value = '';
+	elSurname.value = '';
+	elAge.value = '';
+	elNumber.value = '';
+
+	let person = {
+		Ismi: elNameVal,
+		Familiyasi: elSurnameVal,
+		Yoshi: elAgeVal,
+		Raqami: elNumberVal,
+	};
+
+	contactList.push(person);
+	renderContact();
 });
